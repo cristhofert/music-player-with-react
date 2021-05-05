@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 
 export const Player = props => {
 	const inputRef = useRef();
-	const [pausa, setPausa] = useState(">");
+	const [pausa, setPausa] = useState("❙❙");
 
 	const pausar = () => {
 		if (pausa === "❙❙") {
