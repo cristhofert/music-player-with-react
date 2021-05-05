@@ -4,8 +4,12 @@ import { Player } from "./component/player.jsx";
 
 const App = () => {
 	const songURL = "https://assets.breatheco.de/apis/sound/";
-	const [currentSong, setCurrentSong] = useState("");
+	const [currentSong, setCurrentSong] = useState(
+		"files/mario/songs/castle.mp3"
+	);
 	const [soundList, setSoundList] = useState();
+	const [currentSongIndex, setCurrentSongIndex] = useState(1);
+	const [pause, setPause] = useState(true);
 	useEffect(() => {
 		const fetchData = async () => {
 			try {
@@ -19,9 +23,21 @@ const App = () => {
 		fetchData();
 	}, []);
 
-	const playSound = url => {
-		setCurrentSong(url);
+	const playSound = (url, i) => {
+		setCurrentSongIndex(i);
 	};
+
+	const playNext = () => {
+		setCurrentSongIndex(prev => (prev += 1));
+	};
+
+	const playPrev = () => {
+		setCurrentSongIndex(currentSongIndex - 1);
+	};
+
+	useEffect(() => {
+		soundList ? setCurrentSong(soundList[currentSongIndex].url) : "";
+	}, [currentSongIndex]);
 
 	return (
 		<div className="container">
@@ -34,7 +50,12 @@ const App = () => {
 					playSound={playSound}
 					songURL={songURL}
 				/>
-				<Player song={currentSong} songURL={songURL} />
+				<Player
+					song={currentSong}
+					songURL={songURL}
+					playNext={playNext}
+					playPrev={playPrev}
+				/>
 			</div>
 		</div>
 	);
